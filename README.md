@@ -1,4 +1,4 @@
-# PingMCP - Audio Notifications for Claude
+# PingMCP - Audio Notifications for Claude Code
 
 **Never miss when Claude finishes a task again!** 🔔
 
@@ -124,11 +124,11 @@ node server.js
 
 Add PingMCP through MCP registries:
 
-- **mcp-get.com**: `npx @mcp-get/registry add pingmcp`
-- **MCP.Bar**: Browse at [mcp.bar](https://mcp.bar)  
-- **Official MCP Registry**: Coming soon
+- **MCP.Bar**: [Submit form available](https://mcp.bar/submit) - Ready for submission
+- **Official MCP Registry**: Coming soon (in development at [modelcontextprotocol/registry](https://github.com/modelcontextprotocol/registry))
+- **mcp-get.com**: Coming soon
 
-Or install manually with: `npx pingmcp`
+Or install manually with: `npx pingmcp` (coming soon)
 
 ## Specifications
 
@@ -138,7 +138,7 @@ Or install manually with: `npx pingmcp`
 - **Platforms:** macOS, Linux, Windows
 - **License:** MIT
 
-**Files:** `server.js`, `package.json`, `notification.mp3`, `custom/` (gitignored)
+**Files:** `server.js`, `package.json`, `notification.mp3` (from [Mixkit](https://mixkit.co)), `custom/` (gitignored)
 
 ---
 
