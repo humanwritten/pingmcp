@@ -1,0 +1,13 @@
+{
+  "name": "pingmcp",
+  "version": "1.0.0",
+  "description": "MCP server for notification sounds",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0"
+  }
+}
