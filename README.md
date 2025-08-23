@@ -120,6 +120,16 @@ node server.js
 3. **Graceful fallbacks**: Always works, even without sound files
 4. **Zero configuration**: Works out of the box with included sound
 
+## MCP Registry
+
+Add PingMCP through MCP registries:
+
+- **mcp-get.com**: `npx @mcp-get/registry add pingmcp`
+- **MCP.Bar**: Browse at [mcp.bar](https://mcp.bar)  
+- **Official MCP Registry**: Coming soon
+
+Or install manually with: `npx pingmcp`
+
 ## Specifications
 
 - **Server:** 72 lines of clean JavaScript
@@ -129,6 +139,17 @@ node server.js
 - **License:** MIT
 
 **Files:** `server.js`, `package.json`, `notification.mp3`, `custom/` (gitignored)
+
+---
+
+## Star History
+
+<a href="https://star-history.com/#humanwritten/pingmcp&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=humanwritten/pingmcp&type=Date&theme=dark" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=humanwritten/pingmcp&type=Date" />
+ </picture>
+</a>
 
 ---
 

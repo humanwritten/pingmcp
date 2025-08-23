@@ -1,13 +1,33 @@
 {
   "name": "pingmcp",
   "version": "1.0.0",
-  "description": "MCP server for notification sounds",
+  "description": "Audio notifications for Claude - Never miss when Claude finishes tasks. Perfect for multi-Claude workflows and long operations.",
   "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
+  "keywords": ["mcp", "claude", "notifications", "audio", "productivity", "multi-claude", "terminal"],
+  "author": "humanwritten",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/humanwritten/pingmcp.git"
+  },
+  "homepage": "https://github.com/humanwritten/pingmcp#readme",
+  "bugs": {
+    "url": "https://github.com/humanwritten/pingmcp/issues"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.6.0"
+  },
+  "mcp": {
+    "capabilities": {
+      "tools": {
+        "notify": {
+          "description": "Play a notification sound to alert the user"
+        }
+      }
+    }
   }
 }
