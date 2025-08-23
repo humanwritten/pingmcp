@@ -38,7 +38,7 @@ function discoverSounds() {
     const audioFiles = readdirSync(__dirname, { withFileTypes: true })
       .filter(dirent => dirent.isFile() && isValidAudioFile(dirent.name))
       .map(dirent => dirent.name)
-      .filter(name => name !== 'notification.mp3') // Exclude already found
+      .filter(name => name !== 'notification.mp3' && name !== 'default.mp3') // Exclude already found
       .sort();
     
     audioFiles.forEach(file => {

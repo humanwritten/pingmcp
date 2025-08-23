@@ -15,7 +15,7 @@ const OS = platform();
 let cachedSoundFile = null;
 
 // Precompute sound at startup to avoid first-call FS hit
-setTimeout(() => getSoundFile(), 0);
+getSoundFile();
 
 function getSoundFile() {
   if (cachedSoundFile) return cachedSoundFile;
@@ -40,6 +40,14 @@ function systemBeep() {
 
 function playAudioFile(file, callback) {
   const options = { stdio: 'ignore', detached: true };
+  let callbackInvoked = false;
+  
+  const safeCallback = (hasError) => {
+    if (!callbackInvoked) {
+      callbackInvoked = true;
+      callback(hasError);
+    }
+  };
   
   let child;
   if (OS === 'darwin') {
@@ -54,11 +62,11 @@ function playAudioFile(file, callback) {
   }
   
   if (child) {
-    child.on('error', () => callback(true)); // Signal error
-    child.on('close', (code) => callback(code !== 0)); // Signal error only on non-zero exit
+    child.on('error', () => safeCallback(true)); // Signal error
+    child.on('close', (code) => safeCallback(code !== 0)); // Signal error only on non-zero exit
     child.unref();
   } else {
-    callback(true); // No player available
+    safeCallback(true); // No player available
   }
 }
 

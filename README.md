@@ -69,7 +69,7 @@ That's it! Claude will now ping you after every completed task.
 **Supported formats:** MP3 (recommended - smallest), WAV, M4A  
 **Tip:** Keep sounds short (1-3 seconds) for best experience  
 **Note:** Sound files are detected at startup - restart to pick up new sounds  
-**Linux:** Requires `paplay` (PulseAudio/PipeWire) for audio; falls back to terminal bell
+**Linux:** Requires `paplay` (PulseAudio/PipeWire) for audio; falls back to terminal bell (must be enabled)
 
 **Free sounds:** Download from [Mixkit](https://mixkit.co/free-sound-effects/notification/) (copyright-free)
 
