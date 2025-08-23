@@ -3,46 +3,80 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
-import { execFile } from 'child_process';
-import { existsSync, readdirSync } from 'fs';
+import { spawn } from 'child_process';
+import { existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { platform } from 'os';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const OS = platform();
 
-const customSound = join(__dirname, 'custom', 'default.mp3');
+let cachedSoundFile = null;
+
+// Precompute sound at startup to avoid first-call FS hit
+setTimeout(() => getSoundFile(), 0);
 
 function getSoundFile() {
-  if (existsSync(customSound)) return { file: customSound, type: 'custom/default.mp3' };
+  if (cachedSoundFile) return cachedSoundFile;
   
-  try {
-    const audioFiles = readdirSync(__dirname).filter(f => f.endsWith('.mp3') || f.endsWith('.wav') || f.endsWith('.m4a'));
-    
-    // Look for notification.mp3 first, then use first alphabetically
-    const preferredFile = audioFiles.find(f => f === 'notification.mp3') || audioFiles[0];
-    if (preferredFile) return { file: join(__dirname, preferredFile), type: preferredFile };
-  } catch {}
+  // Priority: custom/default.mp3 → notification.mp3 → system beep
+  const customSound = join(__dirname, 'custom', 'default.mp3');
+  if (existsSync(customSound)) {
+    return cachedSoundFile = { file: customSound, type: 'custom/default.mp3' };
+  }
   
-  return { file: null, type: 'system beep' };
+  const notificationFile = join(__dirname, 'notification.mp3');
+  if (existsSync(notificationFile)) {
+    return cachedSoundFile = { file: notificationFile, type: 'notification.mp3' };
+  }
+  
+  return cachedSoundFile = { file: null, type: 'system beep' };
+}
+
+function systemBeep() {
+  process.stdout.write('\x07');
+}
+
+function playAudioFile(file, callback) {
+  const options = { stdio: 'ignore', detached: true };
+  
+  let child;
+  if (OS === 'darwin') {
+    child = spawn('afplay', [file], options);
+  } else if (OS === 'linux') {
+    child = spawn('paplay', [file], options);
+  } else if (OS === 'win32') {
+    const command = `(New-Object Media.SoundPlayer "${file.replace(/"/g, '""')}").PlaySync()`;
+    const encoded = Buffer.from(command, 'utf16le').toString('base64');
+    child = spawn('powershell', ['-NoProfile', '-EncodedCommand', encoded], 
+      { ...options, windowsHide: true });
+  }
+  
+  if (child) {
+    child.on('error', () => callback(true)); // Signal error
+    child.on('close', (code) => callback(code !== 0)); // Signal error only on non-zero exit
+    child.unref();
+  } else {
+    callback(true); // No player available
+  }
 }
 
 function playSound() {
-  const os = platform();
-  const { file } = getSoundFile();
+  const soundFile = getSoundFile();
   
-  if (file) {
-    if (os === 'darwin') {
-      execFile('afplay', [file], () => {});
-    } else if (os === 'linux') {
-      execFile('paplay', [file], () => process.stdout.write('\x07'));
-    } else if (os === 'win32') {
-      execFile('powershell', ['-NoProfile', '-Command', 
-        `(New-Object Media.SoundPlayer "${file}").PlaySync()`], () => process.stdout.write('\x07'));
-    }
+  if (soundFile.file) {
+    playAudioFile(soundFile.file, (hasError) => {
+      // Only beep on error
+      if (hasError) {
+        systemBeep();
+      }
+    });
   } else {
-    process.stdout.write('\x07');
+    systemBeep();
   }
+  
+  return soundFile;
 }
 
 const server = new Server({ name: 'pingmcp', version: '1.0.0' }, { capabilities: { tools: {} } });
@@ -60,9 +94,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === 'notify') {
-    playSound();
+    const soundFile = playSound();
+    const message = request.params.arguments?.message;
+    const responseText = message 
+      ? `Notification: "${message}" | Sound: ${soundFile.type}`
+      : `Notification sound played: ${soundFile.type}`;
+    
     return {
-      content: [{ type: 'text', text: `Notification sound played: ${getSoundFile().type}` }]
+      content: [{ type: 'text', text: responseText }]
     };
   }
   throw new Error(`Unknown tool: ${request.params.name}`);

@@ -4,8 +4,15 @@
   "description": "Audio notifications for Claude - Never miss when Claude finishes tasks. Perfect for multi-Claude workflows and long operations.",
   "type": "module",
   "main": "server.js",
+  "bin": {
+    "pingmcp": "server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test-sounds": "node test-sounds.js"
   },
   "keywords": ["mcp", "claude", "notifications", "audio", "productivity", "multi-claude", "terminal"],
   "author": "humanwritten",

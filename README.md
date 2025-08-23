@@ -64,10 +64,12 @@ That's it! Claude will now ping you after every completed task.
 1. `custom/default.mp3` (your personal override)
 2. `notification.mp3` (built-in sound)  
 3. Any `.mp3`/`.wav`/`.m4a` file in main folder
-4. System beep (universal fallback)
+4. System beep (fallback - may be silent if terminal bell is disabled)
 
 **Supported formats:** MP3 (recommended - smallest), WAV, M4A  
-**Tip:** Keep sounds short (1-3 seconds) for best experience
+**Tip:** Keep sounds short (1-3 seconds) for best experience  
+**Note:** Sound files are detected at startup - restart to pick up new sounds  
+**Linux:** Requires `paplay` (PulseAudio/PipeWire) for audio; falls back to terminal bell
 
 **Free sounds:** Download from [Mixkit](https://mixkit.co/free-sound-effects/notification/) (copyright-free)
 
@@ -104,7 +106,10 @@ After completing tasks in this project, use the 'notify' tool to alert the user 
 ### Testing
 
 ```bash
-# Test your sound
+# Test all available sounds
+npm run test-sounds
+
+# Test individual sounds manually
 afplay notification.mp3           # macOS
 afplay custom/default.mp3         # Custom sound
 
@@ -132,10 +137,12 @@ Or install manually with: `npx pingmcp` (coming soon)
 
 ## Specifications
 
-- **Server:** 72 lines of clean JavaScript
+- **Server:** ~100 lines of clean, simple JavaScript
 - **Dependencies:** Only MCP SDK (required)
 - **Sound:** 56KB MP3 notification (3.5 seconds)
-- **Platforms:** macOS, Linux, Windows
+- **Platforms:** macOS (`afplay`), Linux (`paplay`), Windows (`powershell`)
+- **Features:** Sound caching, graceful fallbacks, cross-platform audio
+- **CLI Support:** `npx pingmcp` and binary installation via `package.json`
 - **License:** MIT
 
 **Files:** `server.js`, `package.json`, `notification.mp3` (from [Mixkit](https://mixkit.co)), `custom/` (gitignored)
