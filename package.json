@@ -12,7 +12,8 @@
   },
   "scripts": {
     "start": "node server.js",
-    "test-sounds": "node test-sounds.js"
+    "test-sounds": "node test-sounds.js",
+    "test-cross-platform": "node test-cross-platform.js"
   },
   "keywords": ["mcp", "claude", "notifications", "audio", "productivity", "multi-claude", "terminal"],
   "author": "humanwritten",

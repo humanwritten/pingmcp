@@ -109,6 +109,9 @@ After completing tasks in this project, use the 'notify' tool to alert the user 
 # Test all available sounds
 npm run test-sounds
 
+# Comprehensive cross-platform testing
+npm run test-cross-platform
+
 # Test individual sounds manually
 afplay notification.mp3           # macOS
 afplay custom/default.mp3         # Custom sound
@@ -116,6 +119,24 @@ afplay custom/default.mp3         # Custom sound
 # Test the MCP server
 node server.js
 # Input: {"jsonrpc":"2.0","method":"tools/call","params":{"name":"notify"},"id":1}
+```
+
+#### Cross-Platform Testing with Parallels
+
+For comprehensive testing across macOS, Linux, and Windows:
+
+```bash
+# 1. Test on macOS (host)
+npm run test-cross-platform
+
+# 2. Deploy to Linux VM
+./deploy-to-vm.sh linux ubuntu-vm.local username
+
+# 3. Deploy to Windows VM (manual or shared folder)
+# Via Parallels shared folder: \\psf\Home\Documents\Github\pingmcp
+# Then run: npm run test-cross-platform
+
+# 4. Compare results from test-results-*.json files
 ```
 
 ## How It Works

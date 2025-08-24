@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-08-23T22:52:08.024Z",
+  "environment": {
+    "os": "darwin",
+    "node": "v23.9.0",
+    "arch": "arm64",
+    "isWSL": false,
+    "isVM": false
+  },
+  "results": {
+    "platform": "darwin",
+    "nativeAudio": {
+      "success": true
+    },
+    "systemBeep": {
+      "success": true
+    },
+    "mcpServer": {
+      "success": true,
+      "output": "{\"result\":{\"content\":[{\"type\":\"text\",\"text\":\"Notification: \\\"Cross-platform test notification\\\" | Sound: custom/default.mp3\"}]},\"jsonrpc\":\"2.0\",\"id\":1}"
+    }
+  },
+  "summary": {
+    "passed": 3,
+    "total": 3
+  }
+}
